@@ -11,9 +11,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
     {% if title %}
-        <title>Flask Blog - {{ title }}</title>
+        <title>My Blog - {{ title }}</title>
     {% else %}
-        <title>Flask Blog</title>
+        <title>My Blog</title>
     {% endif %}
 </head>
 <body>
@@ -30,14 +30,24 @@
               <a class="nav-item nav-link" href="{{url_for('main.about')}}">About</a>
             </div>
             <!-- Navbar Right Side -->
+            
+
             <div class="navbar-nav">
+            {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('main.logout')}}">Logout</a>
+
+            {% else %}
               <a class="nav-item nav-link" href="{{url_for('main.login')}}">Login</a>
               <a class="nav-item nav-link" href="{{url_for('main.register')}}">Register</a>
+            {% endif %}
             </div>
           </div>
         </div>
       </nav>
     </header>
+    <!-- <div class="han"> -->
+      <!-- <img src="photos/photo.jpg" style="height:200px  " alt="img"> -->
+      <!-- jjkj</div> -->
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
@@ -56,6 +66,7 @@
         </div>
         <div class="col-md-4">
           <div class="content-section">
+            
             <h3>Sidebar</h3>
             <p class='text-muted'>Put any information here you'd like.
               <ul class="list-group">
