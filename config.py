@@ -5,8 +5,11 @@ class Config:
     General parent class
 
     """
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 's3cr3t3k3y'
+    # QUOTE_API_BASE_URL="http://quotes.stormconsultancy.co.uk/{}/{}"
+    # QUOTE_API_KEY = os.environ.get('QUOTE_API_KEY')
 
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 's3cr3t3k3y'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 class ProdConfig(Config):
     """
     production configuration
@@ -27,10 +30,8 @@ class DevConfig(Config):
     """
     Development Configuration
     """
-    QUOTE_API_BASE_URL="http://quotes.stormconsultancy.co.uk/{}/{}"
-    QUOTE_API_KEY = os.environ.get('QUOTE_API_KEY')
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 's3cr3t3k3y'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:Access@localhost/myblog'
 
     DEBUG = True
 
