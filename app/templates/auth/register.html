@@ -6,7 +6,7 @@
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Join Us</legend>
             <div class="form-group">
-                {{ form.username.label(class="form-control-lable") }}
+                {{ form.username.label(class="form-control-label") }}
 
                 {% if form.username.errors %}
                     {{ form.username(class="form-control form-control-lg is-invalid") }}
@@ -24,7 +24,7 @@
                 
             </div>
             <div class="form-group">
-                {{ form.email.label(class="form-control-lable") }}
+                {{ form.email.label(class="form-control-label") }}
                 {% if form.email.errors %}
                 {{ form.email(class="form-control form-control-lg is-invalid") }}
 
@@ -40,7 +40,7 @@
             
             </div>
             <div class="form-group">
-                {{ form.password.label(class="form-control-lable") }}
+                {{ form.password.label(class="form-control-label") }}
                 {% if form.password.errors %}
                 {{ form.password(class="form-control form-control-lg is-invalid") }}
 
@@ -56,7 +56,7 @@
             
             </div>
             <div class="form-group">
-                {{ form.confirmPassword.label(class="form-control-lable") }}
+                {{ form.confirmPassword.label(class="form-control-label") }}
                 {% if form.confirmPassword.errors %}
                 {{ form.confirmPassword(class="form-control form-control-lg is-invalid") }}
 
