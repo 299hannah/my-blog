@@ -1,38 +1,27 @@
-from flask import render_template, url_for
+
+from flask import render_template
 from . import main
 from flask_login import login_required
-from .. import db
-# , bcrypt
-
-# from forms import RegForm, LoginForm
-
-
-posts = [
-    {
-        'author':'Hannah',
-        'title':'Blog 1',
-        'content':'First post content',
-        'date_posted':'April 20'
-    },
-    {
-        'author':'Jane',
-        'title':'Blog 2',
-        'content':'second post content',
-        'date_posted':'April 21'
-    }
-]
-
+# posts = [
+#     {
+#         'author': 'Manada Butate',
+#         'title': 'New Blog',
+#         'content': 'Mambo Vipi',
+#         'date_posted': 'April 12, 2021'
+        
+#     },
+#     {
+#         'author': 'Tika Ingoha',
+#         'title': 'Trending Blod',
+#         'content': 'Haba na Haba',
+#         'date_posted': 'April 21, 2021'
+        
+#     }
+# ]
 @main.route('/')
 # @login_required
-def index():
-    return render_template('index.html', posts=posts)
-
+def home():
+    return render_template('index.html')
 @main.route('/about')
 def about():
-    return render_template('about.html',title='about')
-
-@main.route('/post/new')
-@login_required
-def new_post():
-        return render_template('create_post.html',title='New Post')
-
+    return render_template('about.html', title = 'About')
