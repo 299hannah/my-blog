@@ -1,18 +1,35 @@
 import os
 import secrets
 from PIL import Image
-from flask import  render_template,redirect,url_for,request,flash
+from flask import  render_template,redirect,url_for,request,flash,abort
 from . import auth
 from flask_login import login_required,current_user,login_user,logout_user
 from .. import db
-from .forms import RegForm,LoginForm,UpdateForm
-from ..models import User
+from .forms import RegForm,LoginForm,UpdateForm,PostForm
+from ..models import User,Post
+
+
+
+
+@auth.route('/index')
+@auth.route('/')
+
+# @login_required
+def index():
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
+
+
+@auth.route('/about')
+def about():
+    return render_template('about.html',title='about')
+
 
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('auth.index'))
     form = RegForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
@@ -27,7 +44,7 @@ def register():
 # @login_required
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('auth.index'))
     
     form = LoginForm()
     if form.validate_on_submit():
@@ -35,7 +52,7 @@ def login():
           if user is not None and user.verify_password(form.password.data):
             login_user(user,form.rememberMe.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.index'))
+            return redirect(next_page) if next_page else redirect(url_for('auth.index'))
           else:
             flash('Log in unsuccessful please check your email or password', 'danger')
 
@@ -44,7 +61,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for("main.index"))
+    return redirect(url_for("auth.index"))
 
 
 def save_picture(form_picture):
@@ -87,5 +104,37 @@ def account():
     image_file = url_for('static', filename='photos/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
+@auth.route('/post/new',  methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title= form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'primary')
+        return redirect(url_for('auth.index'))
+    return render_template('create_post.html',title='New Post', form=form, legend ='Update Post')
 
+@auth.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+@auth.route("/post/<int:post_id>/update",methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('auth.post',post_id =post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post .content
+    return render_template('create_post.html', title='Update Post', legend ='Update Post', form=form)
 

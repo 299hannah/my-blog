@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField,BooleanField
+from wtforms import StringField, PasswordField, SubmitField,BooleanField,TextAreaField
 from wtforms.fields.simple import FileField
 from wtforms.validators import Required, Email, EqualTo, email
 from ..models import User
@@ -49,6 +49,11 @@ class UpdateForm(FlaskForm):
             user= User.query.filter_by(username = username.data).first()
             if user:
                 raise ValidationError('Username is not available')
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[Required()])
+    content = TextAreaField('Content', validators=[Required()])
+    submit = SubmitField('Post')
 
 
 
