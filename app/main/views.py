@@ -31,3 +31,8 @@ def index():
 def about():
     return render_template('about.html',title='about')
 
+@main.route('/post/new')
+@login_required
+def new_post():
+        return render_template('create_post.html',title='New Post')
+

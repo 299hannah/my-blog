@@ -1,9 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField,BooleanField
+from wtforms.fields.simple import FileField
 from wtforms.validators import Required, Email, EqualTo, email
 from ..models import User
 from flask_login import current_user
 from wtforms import ValidationError
+from flask_wtf.file import FileField,FileAllowed
+
 
 class RegForm(FlaskForm):
     username = StringField('Username', validators=[Required()])
@@ -30,6 +33,7 @@ class LoginForm(FlaskForm):
 class UpdateForm(FlaskForm):
     username = StringField('Username', validators=[Required()])
     email = StringField('Email', validators=[Required(), Email()])
+    picture = FileField('update profile picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
     
     def validate_email(self,email):

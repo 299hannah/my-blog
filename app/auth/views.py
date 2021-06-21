@@ -1,4 +1,7 @@
-from flask import render_template,redirect,url_for,request,flash
+import os
+import secrets
+from PIL import Image
+from flask import  render_template,redirect,url_for,request,flash
 from . import auth
 from flask_login import login_required,current_user,login_user,logout_user
 from .. import db
@@ -43,10 +46,44 @@ def logout():
     logout_user()
     return redirect(url_for("main.index"))
 
-@auth.route('/account')
+
+def save_picture(form_picture):
+    #returns filename and extension itself
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join('app/static/photos',picture_fn)
+    
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+
+
+    i.save(picture_path)
+
+    return picture_fn
+
+
+
+@auth.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file  = picture_file
+
+        current_user.username =form.username.data
+        current_user.email =form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'primary')
+        return redirect(url_for('auth.account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+
+            
     image_file = url_for('static', filename='photos/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
