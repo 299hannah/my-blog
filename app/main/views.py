@@ -1,6 +1,5 @@
 from . import main
 from ..requests import get_quote
-from ..models import Post
 import os
 import secrets
 from PIL import Image
