@@ -20,6 +20,7 @@ def create_app(config_name):
     #creating configurations
     app.config.from_object(config_options[config_name])
     app.config["SECRET_KEY"] = "s3cr3t3k3y"
+    
 
    
 
@@ -34,7 +35,5 @@ def create_app(config_name):
     login_manager.init_app(app)
 
 
-    # from .requests import configure_request
-    # configure_request(app)
-
+   
     return app

@@ -40,6 +40,18 @@ class Post(db.Model,UserMixin):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+
+class Quotes:
+    def __init__(self, author, quote):
+        self.author = author
+        self.quote = quote
+

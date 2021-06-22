@@ -5,16 +5,16 @@ from flask import  render_template,redirect,url_for,request,flash,abort
 from . import auth
 from flask_login import login_required,current_user,login_user,logout_user
 from .. import db
-from .forms import RegForm,LoginForm,UpdateForm,PostForm
-from ..models import User,Post
+from .forms import RegForm,LoginForm,UpdateForm,PostForm,CommentsForm
+from ..models import User,Post,Comment
 
 @auth.route("/")
 @auth.route("/index")
 def index():
-    # page = request.args.get('page',1,type=int)
+
     posts = Post.query.order_by(Post.date_posted.desc())
-  
-    return render_template('index.html', posts=posts)
+    
+    return render_template('index.html', posts = posts)
 
 @auth.route('/about')
 def about():
@@ -146,4 +146,24 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'primary')
     return redirect(url_for('auth.index'))
+
+
+@auth.route('/comment',  methods=['GET', 'POST'])
+def comment():
+    # post = Post.query.get_or_404()
+    # content  = Comment.query.get_or_404()
+    form = CommentsForm()
+    if form.validate_on_submit():
+        content = form.content.data
+        form.content.data = ""
+        new_comment = Comment(content=content ,user_id=current_user.id,post_id=post.post_id)
+        db.session.add(new_comment)
+        db.session.commit()
+        # return redirect(url_for('auth.index'))
+        return redirect(url_for(".comment", id=post.id))
+
+    return render_template('comments.html', form=form )
+
+      
+
 
