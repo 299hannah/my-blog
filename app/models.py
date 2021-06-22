@@ -55,16 +55,16 @@ class Quote:
         self.author = author
         self.quote = quote
 
-class Quotelike(db.model):
-    __table__ = 'post_like'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+# class Quotelike(db.model):
+#     __table__ = 'post_like'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
-class Quotedislike(db.model):
-    __table__ = 'post_dislike'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+# class Quotedislike(db.model):
+#     __table__ = 'post_dislike'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+#     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
 
