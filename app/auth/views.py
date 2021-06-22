@@ -8,22 +8,17 @@ from .. import db
 from .forms import RegForm,LoginForm,UpdateForm,PostForm
 from ..models import User,Post
 
-
-
-
-@auth.route('/index')
-@auth.route('/')
-
-# @login_required
+@auth.route("/")
+@auth.route("/index")
 def index():
-    posts = Post.query.all()
+    # page = request.args.get('page',1,type=int)
+    posts = Post.query.order_by(Post.date_posted.desc())
+  
     return render_template('index.html', posts=posts)
-
 
 @auth.route('/about')
 def about():
     return render_template('about.html',title='about')
-
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -114,12 +109,13 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'primary')
         return redirect(url_for('auth.index'))
-    return render_template('create_post.html',title='New Post', form=form, legend ='Update Post')
+    return render_template('create_post.html',title='New Post', form=form, legend ='NewPost')
 
 @auth.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
+
 @auth.route("/post/<int:post_id>/update",methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
@@ -131,10 +127,23 @@ def update_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Your post has been updated!', 'success')
+        flash('Your post has been updated!', 'primary')
         return redirect(url_for('auth.post',post_id =post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post .content
     return render_template('create_post.html', title='Update Post', legend ='Update Post', form=form)
+
+
+@auth.route("/post/<int:post_id>/delete",methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'primary')
+    return redirect(url_for('auth.index'))
 
