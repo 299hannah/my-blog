@@ -5,7 +5,7 @@ class Config:
     General parent class
 
     """
-    # BASE_URL='http://quotes.stormconsultancy.co.uk/random.json'
+    BASE_URL='http://quotes.stormconsultancy.co.uk/random.json'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 's3cr3t3k3y'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     

@@ -50,8 +50,21 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
-class Quotes:
+class Quote:
     def __init__(self, author, quote):
         self.author = author
         self.quote = quote
+
+class Quotelike(db.model):
+    __table__ = 'post_like'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+class Quotedislike(db.model):
+    __table__ = 'post_dislike'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
 

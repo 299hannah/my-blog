@@ -6,15 +6,15 @@
     src="{{ url_for('static', filename='photos/' + post.author.image_file) }}">
   <div class="media-body">
     <div class="article-metadata">
-      <a href="{{ url_for('auth.new_post', username=post.author.username)}}"
+      <a href="{{ url_for('main.new_post', username=post.author.username)}}"
         class="mr-2">{{ post.author.username }}</a>
       <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
       {% if post.author == current_user %}
       <div>
         <a class="btn btn-secondary btn-sm mt-1 mb-1"
-        href="{{ url_for('auth.comment') }}">Comment</a>
+        href="{{ url_for('main.comment') }}">Comment</a>
         <a class="btn btn-secondary btn-sm mt-1 mb-1"
-          href="{{ url_for('auth.update_post', post_id=post.id) }}">Update</a>
+          href="{{ url_for('main.update_post', post_id=post.id) }}">Update</a>
         <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
           data-target="#deleteModal">Delete </button> </div>
       {% endif %}

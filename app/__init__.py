@@ -2,6 +2,7 @@ from flask import Flask
 from config import config_options
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+
 # from flask_bcrypt import Bcrypt
 
 login_manager = LoginManager()
@@ -34,6 +35,9 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
 
+    from .requests import configure_request
+    configure_request(app)
+    
 
    
     return app

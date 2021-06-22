@@ -7,13 +7,18 @@
         src="{{ url_for('static', filename='photos/' + post.author.image_file) }}">
     <div class="media-body">
         <div class="article-metadata">
-            <a href="{{ url_for('auth.new_post', username=post.author.username) }}" class="mr-2">{{
+            <a href="{{ url_for('main.new_post', username=post.author.username) }}" class="mr-2">{{
                 post.author.username }}</a>
             <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
         </div>
-        <h2><a href="{{ url_for('auth.post', post_id = post.id)}}" class="article-title">{{ post.title }}</a></h2>
+        <h2><a href="{{ url_for('main.post', post_id = post.id)}}" class="article-title">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content }}</p>
     </div>
 </article>
+<div>
+    <p>{{ quote.quote }}</p>
+    <p>{{ quote.author }}</p>
+
+</div>
 {% endfor %}
 {% endblock %}
